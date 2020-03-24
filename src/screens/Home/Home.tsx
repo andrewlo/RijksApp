@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, Image, FlatList} from 'react-native';
+import {StyleSheet, ActivityIndicator, View, FlatList} from 'react-native';
 
 import {fetchArtList} from '../../services/api';
 import ArtListImage from '../../components/ArtListImage/ArtListImage';
@@ -16,34 +16,37 @@ export default function Home() {
   }, []);
 
   const renderArtItem = ({item}) => {
-    console.log('item', item)
     const {id, webImage} = item;
 
     return (
-      <View style={{flex: 1, flexDirection: 'row'}} key={id}>
-        <ArtListImage url={webImage.url} />
+      <View style={{flex: 1, flexDirection: 'row'}} >
+        <ArtListImage
+          key={id}
+          url={webImage.url}
+        />
       </View>
     );
   };
 
   const renderArtList = () => {
     if (!artList.length) {
-      return <Text>Loading...</Text>;
+      return (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#b3e5fc" />
+        </View>
+      );
     }
-    return <FlatList renderItem={renderArtItem} data={artList}></FlatList>;
+    return <FlatList numColumns={3} renderItem={renderArtItem} data={artList}></FlatList>;
   }
 
-  return (
-    <View style={styles.container}>
-      {renderArtList()}
-    </View>
-  );
+  return renderArtList();
 }
 
 const styles = StyleSheet.create({
-  container: {
+  loadingContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    flexDirection: 'column',
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
   },
