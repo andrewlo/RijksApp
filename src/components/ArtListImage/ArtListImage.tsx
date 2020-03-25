@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, ActivityIndicator, View, Image} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, ActivityIndicator, View, Image } from 'react-native';
 
 interface Props {
   url: string;
@@ -7,7 +7,7 @@ interface Props {
 
 const FIXED_SIZE = 150;
 
-export default function ArtListImage({url}: Props) {
+export default function ArtListImage({ url }: Props) {
   const [loading, setLoading] = useState(true);
 
   const loadingPlaceholder = loading && (
@@ -21,7 +21,7 @@ export default function ArtListImage({url}: Props) {
       <Image
         style={styles.image}
         resizeMode="cover"
-        source={{uri: url}}
+        source={{ uri: url }}
         onLoadEnd={() => setLoading(false)}
       />
       {loadingPlaceholder}

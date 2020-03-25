@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, ActivityIndicator, View, FlatList} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, ActivityIndicator, View, FlatList } from 'react-native';
 
-import {fetchArtList} from '../../services/api';
+import { fetchArtList } from '../../services/api';
 import ArtListImage from '../../components/ArtListImage/ArtListImage';
 
 export default function Home() {
@@ -15,15 +15,12 @@ export default function Home() {
     fetchList();
   }, []);
 
-  const renderArtItem = ({item}) => {
-    const {id, webImage} = item;
+  const renderArtItem = ({ item }) => {
+    const { id, webImage } = item;
 
     return (
-      <View style={{flex: 1, flexDirection: 'row'}} >
-        <ArtListImage
-          key={id}
-          url={webImage.url}
-        />
+      <View style={{ flex: 1, flexDirection: 'row' }}>
+        <ArtListImage key={id} url={webImage.url} />
       </View>
     );
   };
@@ -36,8 +33,14 @@ export default function Home() {
         </View>
       );
     }
-    return <FlatList numColumns={3} renderItem={renderArtItem} data={artList}></FlatList>;
-  }
+    return (
+      <FlatList
+        numColumns={3}
+        renderItem={renderArtItem}
+        data={artList}
+      ></FlatList>
+    );
+  };
 
   return renderArtList();
 }
