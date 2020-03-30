@@ -7,13 +7,15 @@ import {
   TextInput,
   SafeAreaView,
   Text,
+  TouchableHighlight,
 } from 'react-native';
 
 import { fetchArtList } from '../../services/api';
 import ArtListImage from '../../components/ArtListImage/ArtListImage';
 import SafeViewAndroid from '../../utilities/AndroidSafeArea';
+import { shortenString } from '../../utilities/utilities';
 
-export default function Home() {
+export default function Home({ navigation }) {
   const [artList, setArtList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -37,40 +39,41 @@ export default function Home() {
     };
   }, [searchTerm]);
 
+  const onPressArtItem = ({ objectNumber, title }) => {
+    navigation.push('Details', { objectNumber, title });
+  };
+
   const renderArtItem = ({ item }) => {
-    const { id, webImage } = item;
+    const { objectNumber, webImage, title } = item;
 
     if (!webImage) {
       return null;
     }
 
+    const shortenedTitle = shortenString(title);
+
     return (
-      <View key={id} style={{ flex: 1, flexDirection: 'row' }}>
+      <TouchableHighlight
+        key={objectNumber}
+        onPress={() => onPressArtItem({ objectNumber, title: shortenedTitle })}
+        style={styles.listImageTouchable}
+      >
         <ArtListImage url={webImage.url} />
-      </View>
+      </TouchableHighlight>
     );
   };
 
   const renderArtList = () => {
     const loadingIndicator = loading && (
-      <View
-        style={{
-          paddingLeft: 10,
-          paddingRight: 10,
-        }}
-      >
+      <View style={styles.listLoadingContainer}>
         <ActivityIndicator size="small" color="#b3e5fc" />
       </View>
     );
 
     const searchField = (
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={styles.searchContainer}>
         <TextInput
-          style={{
-            flex: 1,
-            height: 40,
-            padding: 10,
-          }}
+          style={styles.searchText}
           value={searchTerm}
           placeholder="Search (ex. landscape)"
           onChangeText={text => setSearchTerm(text)}
@@ -110,5 +113,22 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  listLoadingContainer: {
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  searchText: {
+    flex: 1,
+    height: 40,
+    padding: 10,
+  },
+  listImageTouchable: {
+    flex: 1,
+    flexDirection: 'row',
   },
 });

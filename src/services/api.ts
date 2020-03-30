@@ -1,9 +1,16 @@
-const API_URL =
-  'https://www.rijksmuseum.nl/api/en/collection?key=pUaGTYo5&format=json';
+const API_URL = 'https://www.rijksmuseum.nl/api/en/collection';
+const API_KEY = 'pUaGTYo5';
+
 const PAGE_SIZE = 15;
 
 export function fetchArtList({ search }) {
-  return fetch(`${API_URL}&q=${search || ''}&ps=${PAGE_SIZE}`).then(res =>
-    res.json()
-  );
+  return fetch(
+    `${API_URL}?key=${API_KEY}&q=${search || ''}&ps=${PAGE_SIZE}&format=json`
+  ).then(res => res.json());
+}
+
+export function fetchArtDetails({ objectNumber }) {
+  return fetch(
+    `${API_URL}/${objectNumber}?key=${API_KEY}&format=json`
+  ).then(res => res.json());
 }
