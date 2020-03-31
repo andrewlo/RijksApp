@@ -5,9 +5,12 @@ import {
   View,
   SafeAreaView,
   Text,
+  Image,
+  ScrollView,
 } from 'react-native';
 
 import { fetchArtDetails } from '../../services/api';
+import { fontSize, spacing } from '../../styles/styles';
 import SafeViewAndroid from '../../utilities/AndroidSafeArea';
 
 export default function Details({ route }) {
@@ -37,14 +40,27 @@ export default function Details({ route }) {
   const renderArtDetails = () => {
     if (loading || !artDetails) {
       return (
-        <View style={styles.container}>
+        <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#b3e5fc" />
         </View>
       );
     }
 
     const title = artDetails.title || '';
-    return <Text>Details page: {title}</Text>;
+    const { webImage } = artDetails;
+    return (
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={[styles.text, styles.textHeading]}>{title}</Text>
+        <Text style={styles.text}>{artDetails.plaqueDescriptionEnglish}</Text>
+        <Image
+          style={styles.image}
+          resizeMode="contain"
+          source={{
+            uri: webImage.url,
+          }}
+        />
+      </ScrollView>
+    );
   };
 
   return (
@@ -55,9 +71,29 @@ export default function Details({ route }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  loadingContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
+  text: {
+    paddingLeft: spacing(1),
+    paddingRight: spacing(1),
+    paddingBottom: spacing(1),
+  },
+  textHeading: {
+    fontSize: fontSize(1),
+    fontWeight: 'bold',
+  },
+  image: {
+    width: '100%',
+    height: 200,
+    // height: '100%',
+    // flex: 1,
   },
 });

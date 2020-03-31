@@ -14,6 +14,7 @@ import { fetchArtList } from '../../services/api';
 import ArtListImage from '../../components/ArtListImage/ArtListImage';
 import SafeViewAndroid from '../../utilities/AndroidSafeArea';
 import { shortenString } from '../../utilities/utilities';
+import { spacing } from '../../styles/styles';
 
 export default function Home({ navigation }) {
   const [artList, setArtList] = useState([]);
@@ -115,8 +116,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   listLoadingContainer: {
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: spacing(),
+    paddingRight: spacing(),
   },
   searchContainer: {
     flexDirection: 'row',
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
   searchText: {
     flex: 1,
     height: 40,
-    padding: 10,
+    padding: spacing(),
   },
   listImageTouchable: {
     flex: 1,
