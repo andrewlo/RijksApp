@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, ActivityIndicator, View, Image } from 'react-native';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  ActivityIndicator,
+  View,
+  Image,
+  Animated,
+} from 'react-native';
 
 interface Props {
   url: string;
@@ -9,6 +15,7 @@ const FIXED_SIZE = 150;
 
 export default function ArtListImage({ url }: Props) {
   const [loading, setLoading] = useState(true);
+  const [opacity] = useState(new Animated.Value(0));
 
   const loadingPlaceholder = loading && (
     <View style={styles.placeholder}>
@@ -16,13 +23,26 @@ export default function ArtListImage({ url }: Props) {
     </View>
   );
 
+  const fadeInStyles = {
+    opacity,
+  };
+
+  const onLoad = () => {
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+    setLoading(false);
+  };
+
   return (
     <>
-      <Image
-        style={styles.image}
+      <Animated.Image
+        style={[fadeInStyles, styles.image]}
         resizeMode="cover"
         source={{ uri: url }}
-        onLoadEnd={() => setLoading(false)}
+        onLoadEnd={onLoad}
       />
       {loadingPlaceholder}
     </>
