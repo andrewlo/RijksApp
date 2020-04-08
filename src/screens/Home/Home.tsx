@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import { fetchArtList } from '../../services/api';
-import ArtListImage from '../../components/ArtListImage/ArtListImage';
+import ArtImage from '../../components/ArtImage/ArtImage';
 import SafeViewAndroid from '../../utilities/AndroidSafeArea';
 import { shortenString } from '../../utilities/utilities';
 import { spacing } from '../../styles/styles';
@@ -59,7 +59,7 @@ export default function Home({ navigation }) {
         onPress={() => onPressArtItem({ objectNumber, title: shortenedTitle })}
         style={styles.listImageTouchable}
       >
-        <ArtListImage url={webImage.url} />
+        <ArtImage url={webImage.url} />
       </TouchableHighlight>
     );
   };

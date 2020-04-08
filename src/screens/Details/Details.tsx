@@ -5,13 +5,14 @@ import {
   View,
   SafeAreaView,
   Text,
-  Image,
+  Dimensions,
   ScrollView,
 } from 'react-native';
 
 import { fetchArtDetails } from '../../services/api';
 import { fontSize, spacing } from '../../styles/styles';
 import SafeViewAndroid from '../../utilities/AndroidSafeArea';
+import ArtImage from '../../components/ArtImage/ArtImage';
 
 export default function Details({ route }) {
   const [artDetails, setArtDetails] = useState<any>();
@@ -47,18 +48,17 @@ export default function Details({ route }) {
     }
 
     const title = artDetails.title || '';
-    const { webImage } = artDetails;
+    const {
+      webImage: { url, width, height },
+    } = artDetails;
+
+    const imageHeight = (Dimensions.get('window').width * height) / width;
+
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={[styles.text, styles.textHeading]}>{title}</Text>
         <Text style={styles.text}>{artDetails.plaqueDescriptionEnglish}</Text>
-        <Image
-          style={styles.image}
-          resizeMode="contain"
-          source={{
-            uri: webImage.url,
-          }}
-        />
+        <ArtImage url={url} resizeMode="contain" height={imageHeight} />
       </ScrollView>
     );
   };
@@ -93,7 +93,5 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 200,
-    // height: '100%',
-    // flex: 1,
   },
 });

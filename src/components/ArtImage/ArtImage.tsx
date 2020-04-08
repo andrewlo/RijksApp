@@ -9,16 +9,29 @@ import {
 
 interface Props {
   url: string;
+  width?: string | number;
+  height?: string | number;
+  resizeMode?: string;
 }
 
 const FIXED_SIZE = 150;
 
-export default function ArtListImage({ url }: Props) {
+export default function ArtImage({
+  url,
+  width = '100%',
+  height = FIXED_SIZE,
+  resizeMode = 'cover',
+}: Props) {
   const [loading, setLoading] = useState(true);
   const [opacity] = useState(new Animated.Value(0));
 
+  const dimensionStyles = {
+    width,
+    height,
+  };
+
   const loadingPlaceholder = loading && (
-    <View style={styles.placeholder}>
+    <View style={[styles.placeholder, dimensionStyles]}>
       <ActivityIndicator size="small" color="#b3e5fc" />
     </View>
   );
@@ -39,8 +52,8 @@ export default function ArtListImage({ url }: Props) {
   return (
     <>
       <Animated.Image
-        style={[fadeInStyles, styles.image]}
-        resizeMode="cover"
+        style={[dimensionStyles, fadeInStyles]}
+        resizeMode={resizeMode}
         source={{ uri: url }}
         onLoadEnd={onLoad}
       />
@@ -50,14 +63,8 @@ export default function ArtListImage({ url }: Props) {
 }
 
 const styles = StyleSheet.create({
-  image: {
-    width: '100%',
-    height: FIXED_SIZE,
-  },
   placeholder: {
     position: 'absolute',
-    width: '100%',
-    height: FIXED_SIZE,
     justifyContent: 'center',
   },
 });
