@@ -48,6 +48,7 @@ export default function Details({ route }) {
     }
 
     const title = artDetails.title || '';
+    const artist = artDetails.principalMaker || '';
     const {
       webImage: { url, width, height },
     } = artDetails;
@@ -56,7 +57,10 @@ export default function Details({ route }) {
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={[styles.text, styles.textHeading]}>{title}</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={[styles.text, styles.textHeading]}>{title}</Text>
+          <Text style={styles.text}>{artist}</Text>
+        </View>
         <Text style={styles.text}>{artDetails.plaqueDescriptionEnglish}</Text>
         <ArtImage url={url} resizeMode="contain" height={imageHeight} />
       </ScrollView>
@@ -87,7 +91,6 @@ const styles = StyleSheet.create({
     paddingBottom: spacing(1),
   },
   textHeading: {
-    fontSize: fontSize(1),
     fontWeight: 'bold',
   },
   image: {
